@@ -8,13 +8,14 @@ from sqlalchemy import func
 
 app = Flask(__name__)
 
-# Database Configuration
-DB_USER = os.environ.get('POSTGRES_USER', 'myuser')
-DB_PASSWORD = os.environ.get('POSTGRES_PASSWORD', 'mypassword')
-DB_HOST = os.environ.get('POSTGRES_HOST', 'db')
-DB_NAME = os.environ.get('POSTGRES_DB', 'mydb')
+# Database Configuration (reads strictly from environment variables)
+DB_USER = os.environ.get('POSTGRES_USER', 'postgres')
+DB_PASSWORD = os.environ.get('POSTGRES_PASSWORD', '')
+DB_HOST = os.environ.get('POSTGRES_HOST', 'localhost')
+DB_PORT = os.environ.get('POSTGRES_PORT', '5432')
+DB_NAME = os.environ.get('POSTGRES_DB', 'telematics_db')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:5432/{DB_NAME}"
+app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)

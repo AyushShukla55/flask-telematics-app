@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fleet Telematics Dashboard</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #f4f6f9; color: #333; padding: 30px; }
+        .header { margin-bottom: 25px; }
+        .header h1 { font-size: 26px; color: #1a252f; }
+        .header p { color: #6c757d; font-size: 14px; margin-top: 5px; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-left: 4px solid #3498db; }
+        .card.alert { border-left-color: #e74c3c; }
+        .card.warning { border-left-color: #f39c12; }
+        .card h3 { font-size: 12px; text-transform: uppercase; color: #7f8c8d; margin-bottom: 8px; }
+        .card .value { font-size: 24px; font-weight: bold; color: #2c3e50; }
+        .table-container { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); padding: 20px; }
+        .table-container h2 { font-size: 18px; margin-bottom: 15px; color: #2c3e50; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 12px 15px; border-bottom: 1px solid #edf2f7; font-size: 14px; }
+        th { background-color: #f8fafc; color: #4a5568; font-weight: 600; }
+        .badge { padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; text-transform: uppercase; display: inline-block; }
+        .badge-ACTIVE { background: #e6fffa; color: #234e52; }
+        .badge-SPEEDING { background: #fff5f5; color: #9b2c2c; }
+        .badge-LOW_FUEL { background: #fffaf0; color: #9c4221; }
+        .badge-IDLE { background: #edf2f7; color: #4a5568; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1> Fleet Telematics & Analytics Dashboard</h1>
+        <p>Real-time vehicle health monitoring and aggregate telematics metrics</p>
+    </div>
+
+    <div class="metrics-grid">
+        <div class="card">
+            <h3>Active Vehicles</h3>
+            <div class="value">{{ summary.active_vehicles }}</div>
+        </div>
+        <div class="card">
+            <h3>Avg Speed</h3>
+            <div class="value">{{ summary.average_speed }} km/h</div>
+        </div>
+        <div class="card">
+            <h3>Avg Fuel Level</h3>
+            <div class="value">{{ summary.average_fuel }}%</div>
+        </div>
+        <div class="card alert">
+            <h3>Speeding Violations</h3>
+            <div class="value">{{ summary.speeding_alerts }}</div>
+        </div>
+        <div class="card warning">
+            <h3>Low Fuel Alerts</h3>
+            <div class="value">{{ summary.low_fuel_alerts }}</div>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <h2>Live Vehicle Logs</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Vehicle ID</th>
+                    <th>Speed (km/h)</th>
+                    <th>Fuel Level</th>
+                    <th>Status</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>#{{ log.id }}</td>
+                    <td><strong>{{ log.vehicle_id }}</strong></td>
+                    <td>{{ log.speed }}</td>
+                    <td>{{ log.fuel_level }}%</td>
+                    <td><span class="badge badge-{{ log.status }}">{{ log.status }}</span></td>
+                    <td>{{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

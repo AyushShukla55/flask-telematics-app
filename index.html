@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fleet Telematics Dashboard</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #121212; color: #e0e0e0; margin: 0; padding: 20px; }
+        h1 { color: #ffffff; text-align: center; margin-bottom: 20px; }
+        .summary-cards { display: flex; justify-content: space-around; gap: 15px; margin-bottom: 30px; }
+        .card { background: #1e1e1e; padding: 20px; border-radius: 10px; flex: 1; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .card h3 { margin: 0; color: #a0a0a0; font-size: 0.9rem; }
+        .card p { margin: 10px 0 0; font-size: 1.8rem; font-weight: bold; color: #3b82f6; }
+        table { width: 100%; border-collapse: collapse; background: #1e1e1e; border-radius: 10px; overflow: hidden; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #2e2e2e; }
+        th { background: #252525; color: #a0a0a0; }
+        .status { padding: 4px 8px; border-radius: 5px; font-weight: bold; font-size: 0.85rem; }
+        .status-ACTIVE { background: #064e3b; color: #34d399; }
+        .status-SPEEDING { background: #7f1d1d; color: #f87171; }
+        .status-LOW_FUEL { background: #78350f; color: #fbbf24; }
+        .status-IDLE { background: #374151; color: #9ca3af; }
+    </style>
+</head>
+<body>
+    <h1>🚗 Fleet Telematics Live Dashboard</h1>
+    
+    <div class="summary-cards">
+        <div class="card"><h3>Active Vehicles</h3><p>{{ summary.active_vehicles }}</p></div>
+        <div class="card"><h3>Avg Speed</h3><p>{{ summary.average_speed }} km/h</p></div>
+        <div class="card"><h3>Avg Fuel</h3><p>{{ summary.average_fuel }} %</p></div>
+        <div class="card"><h3>Speeding Alerts</h3><p style="color: #f87171;">{{ summary.speeding_alerts }}</p></div>
+        <div class="card"><h3>Low Fuel Alerts</h3><p style="color: #fbbf24;">{{ summary.low_fuel_alerts }}</p></div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Log ID</th>
+                <th>Vehicle ID</th>
+                <th>Speed (km/h)</th>
+                <th>Fuel Level (%)</th>
+                <th>Status</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log.id }}</td>
+                <td><strong>{{ log.vehicle_id }}</strong></td>
+                <td>{{ log.speed }}</td>
+                <td>{{ log.fuel_level }}%</td>
+                <td><span class="status status-{{ log.status }}">{{ log.status }}</span></td>
+                <td>{{ log.timestamp }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6" style="text-align: center;">No telemetry data logged yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

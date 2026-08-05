@@ -9,8 +9,8 @@ from sqlalchemy import func
 app = Flask(__name__)
 
 # Database Configuration
-DB_USER = os.environ.get('POSTGRES_USER', 'myuser')
-DB_PASSWORD = os.environ.get('POSTGRES_PASSWORD', 'mypassword')
+DB_USER = os.environ.get('POSTGRES_USER', 'YOUR USERNAME')
+DB_PASSWORD = os.environ.get('POSTGRES_PASSWORD','YOUR PASSWORD)
 DB_HOST = os.environ.get('POSTGRES_HOST', 'db')
 DB_NAME = os.environ.get('POSTGRES_DB', 'mydb')
 
